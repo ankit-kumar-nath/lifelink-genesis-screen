@@ -2,6 +2,7 @@
 import { Heart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,7 +12,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2">
             <div className="bg-medical-red rounded-full p-2 medical-pulse">
               <Heart className="h-5 w-5 text-white fill-current" />
             </div>
@@ -19,16 +20,16 @@ const Header = () => {
               <h1 className="text-xl font-bold text-gray-800">LifeLink</h1>
               <p className="text-xs text-gray-600 hidden sm:block">Blood Bank System</p>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-6">
-            <a href="#home" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+            <Link to="/" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               Home
-            </a>
-            <a href="#donate" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+            </Link>
+            <Link to="/donate" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               Donate Blood
-            </a>
+            </Link>
             <a href="#request" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               Request Blood
             </a>
@@ -67,12 +68,12 @@ const Header = () => {
         {isMenuOpen && (
           <div className="lg:hidden mt-4 pb-4 border-t border-gray-200">
             <nav className="flex flex-col space-y-3 mt-4">
-              <a href="#home" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+              <Link to="/" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 Home
-              </a>
-              <a href="#donate" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+              </Link>
+              <Link to="/donate" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 Donate Blood
-              </a>
+              </Link>
               <a href="#request" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 Request Blood
               </a>
