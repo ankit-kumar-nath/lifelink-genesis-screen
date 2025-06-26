@@ -125,3 +125,24 @@
     box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
   }
 }
+
+/* Mobile-specific utilities */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Touch-friendly tap targets */
+@layer utilities {
+  .tap-highlight-none {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+}
+
