@@ -30,9 +30,9 @@ const Header = () => {
             <Link to="/donate" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               Donate Blood
             </Link>
-            <a href="#request" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+            <Link to="/request" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               Request Blood
-            </a>
+            </Link>
             <a href="#inventory" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               Inventory
             </a>
@@ -74,9 +74,9 @@ const Header = () => {
               <Link to="/donate" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 Donate Blood
               </Link>
-              <a href="#request" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+              <Link to="/request" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 Request Blood
-              </a>
+              </Link>
               <a href="#inventory" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 Inventory
               </a>
