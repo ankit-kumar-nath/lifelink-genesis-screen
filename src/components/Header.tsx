@@ -33,9 +33,9 @@ const Header = () => {
             <Link to="/request" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               Request Blood
             </Link>
-            <a href="#inventory" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+            <Link to="/inventory" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               Inventory
-            </a>
+            </Link>
             <a href="#about" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               About
             </a>
@@ -77,9 +77,9 @@ const Header = () => {
               <Link to="/request" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 Request Blood
               </Link>
-              <a href="#inventory" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+              <Link to="/inventory" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 Inventory
-              </a>
+              </Link>
               <a href="#about" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 About
               </a>
