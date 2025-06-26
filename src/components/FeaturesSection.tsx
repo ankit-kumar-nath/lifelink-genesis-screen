@@ -100,7 +100,7 @@ const FeaturesSection = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <div className="bg-white/20 rounded-lg px-6 py-3 backdrop-blur-sm">
-              <div className="text-2xl font-bold">< 5 min</div>
+              <div className="text-2xl font-bold">&lt; 5 min</div>
               <div className="text-sm text-red-100">Average Response Time</div>
             </div>
             <div className="bg-white/20 rounded-lg px-6 py-3 backdrop-blur-sm">
