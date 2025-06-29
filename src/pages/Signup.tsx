@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Heart, Eye, EyeOff, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,10 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -59,11 +62,52 @@ const Signup = () => {
     return newErrors.length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Form submitted:", formData);
-      // Here you would typically send the data to your backend
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    
+    try {
+      // First, create the user with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (authError) {
+        throw authError;
+      }
+
+      // Then, insert additional user data into the users table
+      if (authData.user) {
+        const { error: insertError } = await supabase
+          .from('users')
+          .insert([
+            {
+              id: authData.user.id,
+              first_name: formData.firstName,
+              last_name: formData.lastName,
+              email: formData.email,
+              phone: formData.phone,
+              blood_type: formData.bloodType,
+              agree_to_marketing: formData.agreeToMarketing,
+              created_at: new Date().toISOString(),
+            }
+          ]);
+
+        if (insertError) {
+          throw insertError;
+        }
+
+        toast.success("Account created successfully! Please check your email to verify your account.");
+        navigate("/signin");
+      }
+    } catch (error: any) {
+      console.error("Signup error:", error);
+      toast.error(error.message || "An error occurred during signup");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -119,6 +163,7 @@ const Signup = () => {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     placeholder="John"
+                    disabled={isLoading}
                   />
                 </div>
                 <div className="space-y-2">
@@ -130,6 +175,7 @@ const Signup = () => {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     placeholder="Doe"
+                    disabled={isLoading}
                   />
                 </div>
               </div>
@@ -144,6 +190,7 @@ const Signup = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="john.doe@example.com"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -157,6 +204,7 @@ const Signup = () => {
                   value={formData.phone}
                   onChange={handleInputChange}
                   placeholder="+1 (555) 123-4567"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -168,6 +216,7 @@ const Signup = () => {
                   name="bloodType"
                   value={formData.bloodType}
                   onChange={handleInputChange}
+                  disabled={isLoading}
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <option value="">Select your blood type</option>
@@ -188,11 +237,13 @@ const Signup = () => {
                     value={formData.password}
                     onChange={handleInputChange}
                     placeholder="Enter your password"
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
                     className="absolute right-3 top-1/2 transform -translate-y-1/2"
                     onClick={() => setShowPassword(!showPassword)}
+                    disabled={isLoading}
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4 text-gray-500" />
@@ -214,11 +265,13 @@ const Signup = () => {
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                     placeholder="Confirm your password"
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
                     className="absolute right-3 top-1/2 transform -translate-y-1/2"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    disabled={isLoading}
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-4 w-4 text-gray-500" />
@@ -236,6 +289,7 @@ const Signup = () => {
                     id="agreeToTerms"
                     checked={formData.agreeToTerms}
                     onCheckedChange={(checked) => handleCheckboxChange("agreeToTerms", !!checked)}
+                    disabled={isLoading}
                   />
                   <Label htmlFor="agreeToTerms" className="text-sm leading-5">
                     I agree to the{" "}
@@ -254,6 +308,7 @@ const Signup = () => {
                     id="agreeToMarketing"
                     checked={formData.agreeToMarketing}
                     onCheckedChange={(checked) => handleCheckboxChange("agreeToMarketing", !!checked)}
+                    disabled={isLoading}
                   />
                   <Label htmlFor="agreeToMarketing" className="text-sm leading-5">
                     I would like to receive marketing communications about blood donation opportunities
@@ -264,8 +319,9 @@ const Signup = () => {
               <Button 
                 type="submit" 
                 className="w-full bg-medical-red hover:bg-medical-red-dark"
+                disabled={isLoading}
               >
-                Create Account
+                {isLoading ? "Creating Account..." : "Create Account"}
               </Button>
             </form>
           </CardContent>
