@@ -1,4 +1,3 @@
-
 import { Heart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -43,8 +42,8 @@ const Header = () => {
 
           {/* Desktop CTA Buttons */}
           <div className="hidden lg:flex items-center space-x-3">
-            <Button variant="outline" size="sm" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white">
-              Sign In
+            <Button asChild variant="outline" size="sm" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white">
+              <Link to="/signin">Sign In</Link>
             </Button>
             <Button asChild size="sm" className="bg-medical-red hover:bg-medical-red-dark">
               <Link to="/signup">Register</Link>
@@ -84,8 +83,8 @@ const Header = () => {
                 About
               </Link>
               <div className="flex flex-col space-y-2 mt-4 pt-3 border-t border-gray-100">
-                <Button variant="outline" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white w-full">
-                  Sign In
+                <Button asChild variant="outline" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white w-full">
+                  <Link to="/signin">Sign In</Link>
                 </Button>
                 <Button asChild className="bg-medical-red hover:bg-medical-red-dark w-full">
                   <Link to="/signup">Register</Link>
