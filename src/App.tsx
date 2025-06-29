@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import DonateBlood from "./pages/DonateBlood";
 import RequestBlood from "./pages/RequestBlood";
 import Inventory from "./pages/Inventory";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/donate" element={<DonateBlood />} />
           <Route path="/request" element={<RequestBlood />} />
           <Route path="/inventory" element={<Inventory />} />
+          <Route path="/about" element={<About />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

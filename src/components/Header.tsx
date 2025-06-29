@@ -36,9 +36,9 @@ const Header = () => {
             <Link to="/inventory" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               Inventory
             </Link>
-            <a href="#about" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+            <Link to="/about" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               About
-            </a>
+            </Link>
           </nav>
 
           {/* Desktop CTA Buttons */}
@@ -80,9 +80,9 @@ const Header = () => {
               <Link to="/inventory" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 Inventory
               </Link>
-              <a href="#about" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+              <Link to="/about" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 About
-              </a>
+              </Link>
               <div className="flex flex-col space-y-2 mt-4 pt-3 border-t border-gray-100">
                 <Button variant="outline" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white w-full">
                   Sign In
