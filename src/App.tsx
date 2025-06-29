@@ -9,6 +9,7 @@ import DonateBlood from "./pages/DonateBlood";
 import RequestBlood from "./pages/RequestBlood";
 import Inventory from "./pages/Inventory";
 import About from "./pages/About";
+import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/request" element={<RequestBlood />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/about" element={<About />} />
+          <Route path="/signup" element={<Signup />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -46,8 +46,8 @@ const Header = () => {
             <Button variant="outline" size="sm" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white">
               Sign In
             </Button>
-            <Button size="sm" className="bg-medical-red hover:bg-medical-red-dark">
-              Register
+            <Button asChild size="sm" className="bg-medical-red hover:bg-medical-red-dark">
+              <Link to="/signup">Register</Link>
             </Button>
           </div>
 
@@ -87,8 +87,8 @@ const Header = () => {
                 <Button variant="outline" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white w-full">
                   Sign In
                 </Button>
-                <Button className="bg-medical-red hover:bg-medical-red-dark w-full">
-                  Register
+                <Button asChild className="bg-medical-red hover:bg-medical-red-dark w-full">
+                  <Link to="/signup">Register</Link>
                 </Button>
               </div>
             </nav>
