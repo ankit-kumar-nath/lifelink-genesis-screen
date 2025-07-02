@@ -19,7 +19,7 @@ export type Database = {
           id: number
           last_name: string | null
           password: string | null
-          phone: number | null
+          phone: string | null
         }
         Insert: {
           agree_to_marketing?: boolean | null
@@ -30,7 +30,7 @@ export type Database = {
           id?: number
           last_name?: string | null
           password?: string | null
-          phone?: number | null
+          phone?: string | null
         }
         Update: {
           agree_to_marketing?: boolean | null
@@ -41,7 +41,7 @@ export type Database = {
           id?: number
           last_name?: string | null
           password?: string | null
-          phone?: number | null
+          phone?: string | null
         }
         Relationships: []
       }
