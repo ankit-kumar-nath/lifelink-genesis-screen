@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, Eye, EyeOff, UserPlus } from "lucide-react";
@@ -81,19 +80,18 @@ const Signup = () => {
       }
 
       // Then, insert additional user data into the users table
+      // Let the database generate the UUID automatically
       if (authData.user) {
         const { error: insertError } = await supabase
           .from('users')
           .insert([
             {
-              id: authData.user.id,
               first_name: formData.firstName,
               last_name: formData.lastName,
               email: formData.email,
               phone: formData.phone,
               blood_type: formData.bloodType,
               agree_to_marketing: formData.agreeToMarketing,
-              created_at: new Date().toISOString(),
             }
           ]);
 
