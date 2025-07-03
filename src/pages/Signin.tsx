@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, Eye, EyeOff, LogIn } from "lucide-react";
+import bloodSavesLife from "@/assets/blood-saves-life.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -132,7 +133,24 @@ const Signin = () => {
 
   return (
     <div className="min-h-screen bg-gradient-medical flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+      <div className="grid lg:grid-cols-2 gap-8 w-full max-w-6xl items-center">
+        {/* Hero Image */}
+        <div className="hidden lg:block">
+          <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+            <img 
+              src={bloodSavesLife} 
+              alt="Blood donation saving lives in hospital" 
+              className="w-full h-[600px] object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            <div className="absolute bottom-6 left-6 text-white">
+              <h2 className="text-2xl font-bold mb-2">Every Donation Saves Lives</h2>
+              <p className="text-white/90">Your blood donation can be the difference between life and death for patients in need.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="w-full max-w-md mx-auto lg:mx-0">
         {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/" className="flex items-center justify-center space-x-2 mb-4">
@@ -256,6 +274,7 @@ const Signin = () => {
           <p className="text-xs text-gray-600">
             Sign in to access your donor profile and help save lives.
           </p>
+        </div>
         </div>
       </div>
     </div>
