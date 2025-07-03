@@ -1,10 +1,37 @@
+
 import { Heart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/lib/supabase";
+import { User } from "@supabase/supabase-js";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    getUser();
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-gray-200 z-50 safe-area-top">
@@ -38,16 +65,40 @@ const Header = () => {
             <Link to="/about" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               About
             </Link>
+            {user && (
+              <>
+                <Link to="/dashboard/donor" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+                  Donor Dashboard
+                </Link>
+                <Link to="/dashboard/patient" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+                  Patient Dashboard
+                </Link>
+                <Link to="/dashboard/healthcare" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+                  Healthcare Dashboard
+                </Link>
+              </>
+            )}
           </nav>
 
           {/* Desktop CTA Buttons */}
           <div className="hidden lg:flex items-center space-x-3">
-            <Button asChild variant="outline" size="sm" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white">
-              <Link to="/signin">Sign In</Link>
-            </Button>
-            <Button asChild size="sm" className="bg-medical-red hover:bg-medical-red-dark">
-              <Link to="/signup">Register</Link>
-            </Button>
+            {user ? (
+              <>
+                <span className="text-sm text-gray-600">Welcome, {user.email}</span>
+                <Button onClick={handleSignOut} variant="outline" size="sm" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white">
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button asChild variant="outline" size="sm" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white">
+                  <Link to="/signin">Sign In</Link>
+                </Button>
+                <Button asChild size="sm" className="bg-medical-red hover:bg-medical-red-dark">
+                  <Link to="/signup">Register</Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -82,13 +133,37 @@ const Header = () => {
               <Link to="/about" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 About
               </Link>
+              {user && (
+                <>
+                  <Link to="/dashboard/donor" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+                    Donor Dashboard
+                  </Link>
+                  <Link to="/dashboard/patient" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+                    Patient Dashboard
+                  </Link>
+                  <Link to="/dashboard/healthcare" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+                    Healthcare Dashboard
+                  </Link>
+                </>
+              )}
               <div className="flex flex-col space-y-2 mt-4 pt-3 border-t border-gray-100">
-                <Button asChild variant="outline" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white w-full">
-                  <Link to="/signin">Sign In</Link>
-                </Button>
-                <Button asChild className="bg-medical-red hover:bg-medical-red-dark w-full">
-                  <Link to="/signup">Register</Link>
-                </Button>
+                {user ? (
+                  <>
+                    <span className="text-sm text-gray-600 px-1">Welcome, {user.email}</span>
+                    <Button onClick={handleSignOut} variant="outline" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white w-full">
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button asChild variant="outline" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white w-full">
+                      <Link to="/signin">Sign In</Link>
+                    </Button>
+                    <Button asChild className="bg-medical-red hover:bg-medical-red-dark w-full">
+                      <Link to="/signup">Register</Link>
+                    </Button>
+                  </>
+                )}
               </div>
             </nav>
           </div>
