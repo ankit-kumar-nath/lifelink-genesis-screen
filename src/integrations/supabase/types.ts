@@ -244,8 +244,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_master_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       is_admin: {
         Args: { user_id?: string }
+        Returns: boolean
+      }
+      promote_to_admin: {
+        Args: { user_email: string }
         Returns: boolean
       }
     }

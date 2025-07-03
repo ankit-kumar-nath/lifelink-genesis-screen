@@ -96,26 +96,53 @@ const Signup = () => {
         return;
       }
 
-      // Then, insert additional user data into the users table
+      // Then, insert or update user data in the users table
       if (authData.user) {
-        const { error: insertError } = await supabase
+        // Check if user already exists in our users table (for pre-created admin users)
+        const { data: existingUser } = await supabase
           .from('users')
-          .insert([
-            {
+          .select('id, role')
+          .eq('email', formData.email)
+          .single();
+
+        if (existingUser) {
+          // Update existing user record with auth ID and form data
+          const { error: updateError } = await supabase
+            .from('users')
+            .update({
+              id: authData.user.id, // Link the auth user ID
               first_name: formData.firstName,
               last_name: formData.lastName,
-              email: formData.email,
               phone: formData.phone,
               blood_type: formData.bloodType,
-              role: formData.role,
+              // Keep existing role (important for pre-created admin users)
               agree_to_marketing: formData.agreeToMarketing,
-            }
-          ]);
+            })
+            .eq('email', formData.email);
 
-        if (insertError) {
-          console.error("Insert error:", insertError);
-          // If profile creation fails, we should still allow the user to proceed
-          // as the auth user was created successfully
+          if (updateError) {
+            console.error("Update error:", updateError);
+          }
+        } else {
+          // Insert new user record
+          const { error: insertError } = await supabase
+            .from('users')
+            .insert([
+              {
+                id: authData.user.id, // Use the auth user ID
+                first_name: formData.firstName,
+                last_name: formData.lastName,
+                email: formData.email,
+                phone: formData.phone,
+                blood_type: formData.bloodType,
+                role: formData.role,
+                agree_to_marketing: formData.agreeToMarketing,
+              }
+            ]);
+
+          if (insertError) {
+            console.error("Insert error:", insertError);
+          }
         }
 
         toast.success("Account created successfully! Please check your email for a confirmation link before signing in.");
