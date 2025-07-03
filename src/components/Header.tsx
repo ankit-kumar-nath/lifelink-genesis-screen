@@ -84,64 +84,71 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-b border-gray-200/50 z-50 safe-area-top shadow-lg">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4">
+        {/* Top Row - All Menu Items */}
+        <div className="flex items-center justify-between py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl p-3 medical-pulse shadow-lg group-hover:shadow-xl transition-all duration-300">
-              <Heart className="h-6 w-6 text-white fill-current" />
+            <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl p-2 medical-pulse shadow-lg group-hover:shadow-xl transition-all duration-300">
+              <Heart className="h-5 w-5 text-white fill-current" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
                 LifeLink
               </h1>
               <p className="text-xs text-muted-foreground hidden sm:block font-medium">Blood Bank System</p>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
-            <Link to="/" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
-              Home
-            </Link>
-            <Link to="/donate" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
-              Donate Blood
-            </Link>
-            <Link to="/request" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
-              Request Blood
-            </Link>
-            <Link to="/inventory" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
-              Inventory
-            </Link>
-            <Link to="/about" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
-              About
-            </Link>
-            {user && userRole && getDashboardLink() && (
-              <Link to={getDashboardLink()!} className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105 px-3 py-2 bg-accent rounded-lg">
-                {getDashboardLabel()}
+          {/* All Navigation Items in Top Row */}
+          <div className="hidden lg:flex items-center space-x-6">
+            {/* Main Navigation */}
+            <nav className="flex items-center space-x-6">
+              <Link to="/" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
+                Home
               </Link>
-            )}
-          </nav>
+              <Link to="/donate" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
+                Donate Blood
+              </Link>
+              <Link to="/request" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
+                Request Blood
+              </Link>
+              <Link to="/inventory" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
+                Inventory
+              </Link>
+              <Link to="/about" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
+                About
+              </Link>
+              {user && userRole && getDashboardLink() && (
+                <Link to={getDashboardLink()!} className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105 px-3 py-2 bg-accent rounded-lg">
+                  {getDashboardLabel()}
+                </Link>
+              )}
+            </nav>
 
-          {/* Desktop CTA Buttons */}
-          <div className="hidden lg:flex items-center space-x-4">
-            {user ? (
-              <>
-                <span className="text-sm text-muted-foreground font-medium">Welcome, {user.email}</span>
-                <Button onClick={handleSignOut} variant="outline" size="sm" className="hover:shadow-lg transition-all duration-300">
-                  Sign Out
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button asChild variant="ghost" size="sm" className="font-medium">
-                  <Link to="/signin">Sign In</Link>
-                </Button>
-                <Button asChild variant="gradient" size="sm" className="font-semibold shadow-lg">
-                  <Link to="/signup">Register</Link>
-                </Button>
-              </>
-            )}
+            {/* Separator */}
+            <div className="w-px h-6 bg-border"></div>
+
+            {/* User Actions */}
+            <div className="flex items-center space-x-3">
+              {user ? (
+                <>
+                  <span className="text-sm text-muted-foreground font-medium">Welcome, {user.email}</span>
+                  <Button onClick={handleSignOut} variant="outline" size="sm" className="hover:shadow-lg transition-all duration-300">
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button asChild variant="ghost" size="sm" className="font-medium">
+                    <Link to="/signin">Sign In</Link>
+                  </Button>
+                  <Button asChild variant="gradient" size="sm" className="font-semibold shadow-lg">
+                    <Link to="/signup">Register</Link>
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -150,51 +157,51 @@ const Header = () => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
-              <X className="h-6 w-6 text-gray-700" />
+              <X className="h-6 w-6 text-foreground" />
             ) : (
-              <Menu className="h-6 w-6 text-gray-700" />
+              <Menu className="h-6 w-6 text-foreground" />
             )}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden mt-4 pb-4 border-t border-gray-200">
-            <nav className="flex flex-col space-y-3 mt-4">
-              <Link to="/" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+          <div className="lg:hidden border-t border-gray-200/50">
+            <nav className="py-4 space-y-3">
+              <Link to="/" className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
                 Home
               </Link>
-              <Link to="/donate" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+              <Link to="/donate" className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
                 Donate Blood
               </Link>
-              <Link to="/request" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+              <Link to="/request" className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
                 Request Blood
               </Link>
-              <Link to="/inventory" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+              <Link to="/inventory" className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
                 Inventory
               </Link>
-              <Link to="/about" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+              <Link to="/about" className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
                 About
               </Link>
               {user && userRole && getDashboardLink() && (
-                <Link to={getDashboardLink()!} className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+                <Link to={getDashboardLink()!} className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
                   {getDashboardLabel()}
                 </Link>
               )}
-              <div className="flex flex-col space-y-2 mt-4 pt-3 border-t border-gray-100">
+              <div className="pt-4 border-t border-gray-200/50 space-y-3">
                 {user ? (
                   <>
-                    <span className="text-sm text-gray-600 px-1">Welcome, {user.email}</span>
-                    <Button onClick={handleSignOut} variant="outline" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white w-full">
+                    <span className="block text-sm text-muted-foreground px-1 font-medium">Welcome, {user.email}</span>
+                    <Button onClick={handleSignOut} variant="outline" className="w-full">
                       Sign Out
                     </Button>
                   </>
                 ) : (
                   <>
-                    <Button asChild variant="outline" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white w-full">
+                    <Button asChild variant="ghost" className="w-full">
                       <Link to="/signin">Sign In</Link>
                     </Button>
-                    <Button asChild className="bg-medical-red hover:bg-medical-red-dark w-full">
+                    <Button asChild variant="gradient" className="w-full">
                       <Link to="/signup">Register</Link>
                     </Button>
                   </>
