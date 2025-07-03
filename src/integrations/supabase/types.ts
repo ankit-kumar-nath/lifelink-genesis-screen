@@ -9,6 +9,197 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      blood_donations: {
+        Row: {
+          blood_type: string
+          created_at: string
+          donation_date: string
+          donor_id: string | null
+          id: string
+          location_id: string | null
+          notes: string | null
+          status: string
+          units_donated: number
+          updated_at: string
+        }
+        Insert: {
+          blood_type: string
+          created_at?: string
+          donation_date?: string
+          donor_id?: string | null
+          id?: string
+          location_id?: string | null
+          notes?: string | null
+          status?: string
+          units_donated?: number
+          updated_at?: string
+        }
+        Update: {
+          blood_type?: string
+          created_at?: string
+          donation_date?: string
+          donor_id?: string | null
+          id?: string
+          location_id?: string | null
+          notes?: string | null
+          status?: string
+          units_donated?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blood_donations_donor_id_fkey"
+            columns: ["donor_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blood_donations_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blood_inventory: {
+        Row: {
+          blood_type: string
+          created_at: string
+          expiry_date: string
+          id: string
+          location_id: string | null
+          units_available: number
+          updated_at: string
+        }
+        Insert: {
+          blood_type: string
+          created_at?: string
+          expiry_date: string
+          id?: string
+          location_id?: string | null
+          units_available?: number
+          updated_at?: string
+        }
+        Update: {
+          blood_type?: string
+          created_at?: string
+          expiry_date?: string
+          id?: string
+          location_id?: string | null
+          units_available?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blood_inventory_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blood_requests: {
+        Row: {
+          blood_type: string
+          created_at: string
+          doctor_name: string | null
+          hospital_name: string
+          id: string
+          location_id: string | null
+          patient_id: string | null
+          reason: string | null
+          status: string
+          units_needed: number
+          updated_at: string
+          urgency: string
+        }
+        Insert: {
+          blood_type: string
+          created_at?: string
+          doctor_name?: string | null
+          hospital_name: string
+          id?: string
+          location_id?: string | null
+          patient_id?: string | null
+          reason?: string | null
+          status?: string
+          units_needed: number
+          updated_at?: string
+          urgency?: string
+        }
+        Update: {
+          blood_type?: string
+          created_at?: string
+          doctor_name?: string | null
+          hospital_name?: string
+          id?: string
+          location_id?: string | null
+          patient_id?: string | null
+          reason?: string | null
+          status?: string
+          units_needed?: number
+          updated_at?: string
+          urgency?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blood_requests_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blood_requests_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      locations: {
+        Row: {
+          address: string
+          capacity: number | null
+          city: string
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          phone: string | null
+          state: string
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          capacity?: number | null
+          city: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          phone?: string | null
+          state: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          capacity?: number | null
+          city?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          phone?: string | null
+          state?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           agree_to_marketing: boolean | null
@@ -53,10 +244,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: {
+        Args: { user_id?: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      user_role: "donor" | "patient" | "healthcare"
+      user_role: "donor" | "patient" | "healthcare" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -172,7 +366,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      user_role: ["donor", "patient", "healthcare"],
+      user_role: ["donor", "patient", "healthcare", "admin"],
     },
   },
 } as const

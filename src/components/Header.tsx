@@ -77,6 +77,8 @@ const Header = () => {
         return 'Patient Dashboard';
       case 'healthcare':
         return 'Healthcare Dashboard';
+      case 'admin':
+        return 'Admin Dashboard';
       default:
         return 'Dashboard';
     }

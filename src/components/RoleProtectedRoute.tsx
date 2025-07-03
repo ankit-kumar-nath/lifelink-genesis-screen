@@ -6,7 +6,7 @@ import { User } from "@supabase/supabase-js";
 
 interface RoleProtectedRouteProps {
   children: React.ReactNode;
-  allowedRole: "donor" | "patient" | "healthcare";
+  allowedRole: "donor" | "patient" | "healthcare" | "admin";
 }
 
 const RoleProtectedRoute = ({ children, allowedRole }: RoleProtectedRouteProps) => {
