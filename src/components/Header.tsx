@@ -85,7 +85,7 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-b border-gray-200/50 z-50 safe-area-top shadow-lg">
       <div className="container mx-auto px-4">
-        {/* Top Row - All Menu Items */}
+        {/* Main Header Row */}
         <div className="flex items-center justify-between py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
@@ -100,116 +100,53 @@ const Header = () => {
             </div>
           </Link>
 
-          {/* All Navigation Items in Top Row */}
-          <div className="hidden lg:flex items-center space-x-6">
-            {/* Main Navigation */}
-            <nav className="flex items-center space-x-6">
-              <Link to="/" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
-                Home
+          {/* Navigation Menu - Always Visible */}
+          <nav className="flex items-center space-x-2 sm:space-x-4 md:space-x-6">
+            <Link to="/" className="text-foreground/80 hover:text-primary transition-all duration-300 text-xs sm:text-sm font-medium hover:scale-105 px-2 py-1">
+              Home
+            </Link>
+            <Link to="/donate" className="text-foreground/80 hover:text-primary transition-all duration-300 text-xs sm:text-sm font-medium hover:scale-105 px-2 py-1">
+              Donate
+            </Link>
+            <Link to="/request" className="text-foreground/80 hover:text-primary transition-all duration-300 text-xs sm:text-sm font-medium hover:scale-105 px-2 py-1">
+              Request
+            </Link>
+            <Link to="/inventory" className="text-foreground/80 hover:text-primary transition-all duration-300 text-xs sm:text-sm font-medium hover:scale-105 px-2 py-1">
+              Inventory
+            </Link>
+            <Link to="/about" className="text-foreground/80 hover:text-primary transition-all duration-300 text-xs sm:text-sm font-medium hover:scale-105 px-2 py-1">
+              About
+            </Link>
+            {user && userRole && getDashboardLink() && (
+              <Link to={getDashboardLink()!} className="text-foreground/80 hover:text-primary transition-all duration-300 text-xs sm:text-sm font-medium hover:scale-105 px-2 py-1 bg-accent rounded-lg">
+                Dashboard
               </Link>
-              <Link to="/donate" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
-                Donate Blood
-              </Link>
-              <Link to="/request" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
-                Request Blood
-              </Link>
-              <Link to="/inventory" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
-                Inventory
-              </Link>
-              <Link to="/about" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
-                About
-              </Link>
-              {user && userRole && getDashboardLink() && (
-                <Link to={getDashboardLink()!} className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105 px-3 py-2 bg-accent rounded-lg">
-                  {getDashboardLabel()}
-                </Link>
-              )}
-            </nav>
-
-            {/* Separator */}
-            <div className="w-px h-6 bg-border"></div>
-
-            {/* User Actions */}
-            <div className="flex items-center space-x-3">
-              {user ? (
-                <>
-                  <span className="text-sm text-muted-foreground font-medium">Welcome, {user.email}</span>
-                  <Button onClick={handleSignOut} variant="outline" size="sm" className="hover:shadow-lg transition-all duration-300">
-                    Sign Out
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button asChild variant="ghost" size="sm" className="font-medium">
-                    <Link to="/signin">Sign In</Link>
-                  </Button>
-                  <Button asChild variant="gradient" size="sm" className="font-semibold shadow-lg">
-                    <Link to="/signup">Register</Link>
-                  </Button>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2 -mr-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? (
-              <X className="h-6 w-6 text-foreground" />
-            ) : (
-              <Menu className="h-6 w-6 text-foreground" />
             )}
-          </button>
-        </div>
+          </nav>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200/50">
-            <nav className="py-4 space-y-3">
-              <Link to="/" className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
-                Home
-              </Link>
-              <Link to="/donate" className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
-                Donate Blood
-              </Link>
-              <Link to="/request" className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
-                Request Blood
-              </Link>
-              <Link to="/inventory" className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
-                Inventory
-              </Link>
-              <Link to="/about" className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
-                About
-              </Link>
-              {user && userRole && getDashboardLink() && (
-                <Link to={getDashboardLink()!} className="block text-foreground/80 hover:text-primary transition-colors py-2 px-1 font-medium">
-                  {getDashboardLabel()}
-                </Link>
-              )}
-              <div className="pt-4 border-t border-gray-200/50 space-y-3">
-                {user ? (
-                  <>
-                    <span className="block text-sm text-muted-foreground px-1 font-medium">Welcome, {user.email}</span>
-                    <Button onClick={handleSignOut} variant="outline" className="w-full">
-                      Sign Out
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button asChild variant="ghost" className="w-full">
-                      <Link to="/signin">Sign In</Link>
-                    </Button>
-                    <Button asChild variant="gradient" className="w-full">
-                      <Link to="/signup">Register</Link>
-                    </Button>
-                  </>
-                )}
-              </div>
-            </nav>
+          {/* User Actions */}
+          <div className="flex items-center space-x-2">
+            {user ? (
+              <>
+                <span className="text-xs sm:text-sm text-muted-foreground font-medium hidden md:block">
+                  {user.email}
+                </span>
+                <Button onClick={handleSignOut} variant="outline" size="sm" className="hover:shadow-lg transition-all duration-300 text-xs px-2 py-1">
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button asChild variant="ghost" size="sm" className="font-medium text-xs px-2 py-1">
+                  <Link to="/signin">Sign In</Link>
+                </Button>
+                <Button asChild variant="gradient" size="sm" className="font-semibold shadow-lg text-xs px-2 py-1">
+                  <Link to="/signup">Register</Link>
+                </Button>
+              </>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </header>
   );
