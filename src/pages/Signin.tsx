@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Heart, Eye, EyeOff, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,15 +8,30 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 const Signin = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false
   });
   const [errors, setErrors] = useState<string[]>([]);
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        navigate("/");
+      }
+    };
+    checkUser();
+  }, [navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,11 +59,38 @@ const Signin = () => {
     return newErrors.length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Sign in form submitted:", formData);
-      // Here you would typically send the data to your backend
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (error) {
+        if (error.message.includes('Email not confirmed')) {
+          toast.error("Please check your email and click the confirmation link before signing in.");
+        } else if (error.message.includes('Invalid login credentials')) {
+          toast.error("Invalid email or password. Please check your credentials.");
+        } else {
+          toast.error(error.message);
+        }
+        return;
+      }
+
+      if (data.user) {
+        toast.success("Successfully signed in!");
+        navigate("/");
+      }
+    } catch (error: any) {
+      console.error("Sign in error:", error);
+      toast.error("An error occurred during sign in");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -103,6 +145,7 @@ const Signin = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="john.doe@example.com"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -117,11 +160,13 @@ const Signin = () => {
                     value={formData.password}
                     onChange={handleInputChange}
                     placeholder="Enter your password"
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
                     className="absolute right-3 top-1/2 transform -translate-y-1/2"
                     onClick={() => setShowPassword(!showPassword)}
+                    disabled={isLoading}
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4 text-gray-500" />
@@ -139,6 +184,7 @@ const Signin = () => {
                     id="rememberMe"
                     checked={formData.rememberMe}
                     onCheckedChange={handleCheckboxChange}
+                    disabled={isLoading}
                   />
                   <Label htmlFor="rememberMe" className="text-sm">
                     Remember me
@@ -152,8 +198,9 @@ const Signin = () => {
               <Button 
                 type="submit" 
                 className="w-full bg-medical-red hover:bg-medical-red-dark"
+                disabled={isLoading}
               >
-                Sign In
+                {isLoading ? "Signing In..." : "Sign In"}
               </Button>
             </form>
           </CardContent>

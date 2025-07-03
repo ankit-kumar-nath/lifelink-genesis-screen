@@ -73,10 +73,18 @@ const Signup = () => {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`
+        }
       });
 
       if (authError) {
-        throw authError;
+        if (authError.message.includes('User already registered')) {
+          toast.error("An account with this email already exists. Please sign in instead.");
+        } else {
+          throw authError;
+        }
+        return;
       }
 
       // Then, insert additional user data into the users table
@@ -96,11 +104,25 @@ const Signup = () => {
           ]);
 
         if (insertError) {
-          throw insertError;
+          console.error("Insert error:", insertError);
+          // If profile creation fails, we should still allow the user to proceed
+          // as the auth user was created successfully
         }
 
-        toast.success("Account created successfully! Please check your email to verify your account.");
-        navigate("/signin");
+        toast.success("Account created successfully! Please check your email for a confirmation link before signing in.");
+        // Don't navigate immediately - user needs to confirm email first
+        // Clear the form
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          password: "",
+          confirmPassword: "",
+          bloodType: "",
+          agreeToTerms: false,
+          agreeToMarketing: false
+        });
       }
     } catch (error: any) {
       console.error("Signup error:", error);
