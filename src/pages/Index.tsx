@@ -36,22 +36,23 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background to-secondary/30 flex items-center justify-center relative overflow-hidden">
+      <div className="min-h-screen gradient-hero flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/10"></div>
         <div className="text-center relative z-10 fade-in-up">
           <div className="flex items-center justify-center mb-6">
-            <div className="bg-card/80 backdrop-blur-md border border-border rounded-2xl p-6 medical-pulse shadow-2xl">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary/30 border-t-primary mx-auto"></div>
+            <div className="bg-white/20 backdrop-blur-xl border border-white/30 rounded-3xl p-8 medical-pulse shadow-2xl glow-effect">
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-white/30 border-t-white mx-auto"></div>
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">LifeLink</h2>
-          <p className="text-muted-foreground font-medium">Loading your experience...</p>
+          <h2 className="text-4xl font-bold text-white drop-shadow-2xl mb-3 tracking-tight">LifeLink</h2>
+          <p className="text-white/90 font-medium text-lg">Creating beautiful experiences...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-surface">
       <Header />
       {user && (
         <div className="bg-gradient-to-r from-accent/10 to-accent/5 border-l-4 border-accent p-6 mx-4 rounded-r-xl shadow-lg backdrop-blur-sm fade-in-up">
