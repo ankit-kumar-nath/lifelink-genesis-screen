@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, Eye, EyeOff, UserPlus } from "lucide-react";
@@ -23,12 +24,18 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
     bloodType: "",
+    role: "donor" as "donor" | "patient" | "healthcare",
     agreeToTerms: false,
     agreeToMarketing: false
   });
   const [errors, setErrors] = useState<string[]>([]);
 
   const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  const roles = [
+    { value: "donor", label: "Blood Donor", description: "I want to donate blood" },
+    { value: "patient", label: "Patient", description: "I need blood transfusion" },
+    { value: "healthcare", label: "Healthcare Provider", description: "I work at a medical facility" }
+  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -56,6 +63,7 @@ const Signup = () => {
     if (formData.password.length < 8) newErrors.push("Password must be at least 8 characters");
     if (formData.password !== formData.confirmPassword) newErrors.push("Passwords do not match");
     if (!formData.bloodType) newErrors.push("Blood type is required");
+    if (!formData.role) newErrors.push("Role is required");
     if (!formData.agreeToTerms) newErrors.push("You must agree to the terms and conditions");
 
     setErrors(newErrors);
@@ -88,7 +96,6 @@ const Signup = () => {
       }
 
       // Then, insert additional user data into the users table
-      // Let the database generate the UUID automatically
       if (authData.user) {
         const { error: insertError } = await supabase
           .from('users')
@@ -99,6 +106,7 @@ const Signup = () => {
               email: formData.email,
               phone: formData.phone,
               blood_type: formData.bloodType,
+              role: formData.role,
               agree_to_marketing: formData.agreeToMarketing,
             }
           ]);
@@ -120,6 +128,7 @@ const Signup = () => {
           password: "",
           confirmPassword: "",
           bloodType: "",
+          role: "donor",
           agreeToTerms: false,
           agreeToMarketing: false
         });
@@ -227,6 +236,25 @@ const Signup = () => {
                   placeholder="+1 (555) 123-4567"
                   disabled={isLoading}
                 />
+              </div>
+
+              {/* Role Selection */}
+              <div className="space-y-2">
+                <Label htmlFor="role">I am a</Label>
+                <select
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  disabled={isLoading}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {roles.map(role => (
+                    <option key={role.value} value={role.value}>
+                      {role.label} - {role.description}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {/* Blood Type */}

@@ -9,17 +9,42 @@ import { User } from "@supabase/supabase-js";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
+      
+      if (session?.user) {
+        // Fetch user role
+        const { data: userData } = await supabase
+          .from('users')
+          .select('role')
+          .eq('email', session.user.email)
+          .single();
+        
+        setUserRole(userData?.role ?? null);
+      }
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          // Fetch user role
+          const { data: userData } = await supabase
+            .from('users')
+            .select('role')
+            .eq('email', session.user.email)
+            .single();
+          
+          setUserRole(userData?.role ?? null);
+        } else {
+          setUserRole(null);
+        }
       }
     );
 
@@ -30,7 +55,26 @@ const Header = () => {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
+    setUserRole(null);
     navigate("/");
+  };
+
+  const getDashboardLink = () => {
+    if (!userRole) return null;
+    return `/dashboard/${userRole}`;
+  };
+
+  const getDashboardLabel = () => {
+    switch (userRole) {
+      case 'donor':
+        return 'Donor Dashboard';
+      case 'patient':
+        return 'Patient Dashboard';
+      case 'healthcare':
+        return 'Healthcare Dashboard';
+      default:
+        return 'Dashboard';
+    }
   };
 
   return (
@@ -65,18 +109,10 @@ const Header = () => {
             <Link to="/about" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
               About
             </Link>
-            {user && (
-              <>
-                <Link to="/dashboard/donor" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
-                  Donor Dashboard
-                </Link>
-                <Link to="/dashboard/patient" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
-                  Patient Dashboard
-                </Link>
-                <Link to="/dashboard/healthcare" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
-                  Healthcare Dashboard
-                </Link>
-              </>
+            {user && userRole && getDashboardLink() && (
+              <Link to={getDashboardLink()!} className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+                {getDashboardLabel()}
+              </Link>
             )}
           </nav>
 
@@ -133,18 +169,10 @@ const Header = () => {
               <Link to="/about" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
                 About
               </Link>
-              {user && (
-                <>
-                  <Link to="/dashboard/donor" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
-                    Donor Dashboard
-                  </Link>
-                  <Link to="/dashboard/patient" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
-                    Patient Dashboard
-                  </Link>
-                  <Link to="/dashboard/healthcare" className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
-                    Healthcare Dashboard
-                  </Link>
-                </>
+              {user && userRole && getDashboardLink() && (
+                <Link to={getDashboardLink()!} className="text-gray-700 hover:text-medical-red transition-colors py-2 px-1">
+                  {getDashboardLabel()}
+                </Link>
               )}
               <div className="flex flex-col space-y-2 mt-4 pt-3 border-t border-gray-100">
                 {user ? (

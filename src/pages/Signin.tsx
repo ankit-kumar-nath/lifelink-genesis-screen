@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, Eye, EyeOff, LogIn } from "lucide-react";
@@ -27,7 +26,18 @@ const Signin = () => {
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        navigate("/");
+        // Get user role and redirect to appropriate dashboard
+        const { data: userData } = await supabase
+          .from('users')
+          .select('role')
+          .eq('email', session.user.email)
+          .single();
+        
+        if (userData?.role) {
+          navigate(`/dashboard/${userData.role}`);
+        } else {
+          navigate("/");
+        }
       }
     };
     checkUser();
@@ -84,7 +94,19 @@ const Signin = () => {
 
       if (data.user) {
         toast.success("Successfully signed in!");
-        navigate("/");
+        
+        // Get user role and redirect to appropriate dashboard
+        const { data: userData } = await supabase
+          .from('users')
+          .select('role')
+          .eq('email', data.user.email)
+          .single();
+        
+        if (userData?.role) {
+          navigate(`/dashboard/${userData.role}`);
+        } else {
+          navigate("/");
+        }
       }
     } catch (error: any) {
       console.error("Sign in error:", error);

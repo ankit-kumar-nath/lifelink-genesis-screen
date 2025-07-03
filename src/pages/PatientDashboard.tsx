@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, Calendar, MapPin, AlertCircle, User, FileText } from "lucide-react";
@@ -7,24 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/Header";
+import RoleProtectedRoute from "@/components/RoleProtectedRoute";
 import { supabase } from "@/lib/supabase";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 
-const PatientDashboard = () => {
+const PatientDashboardContent = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const getUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate("/signin");
-        return;
-      }
-      setUser(session.user);
+      setUser(session?.user ?? null);
     };
-    checkAuth();
-  }, [navigate]);
+    getUser();
+  }, []);
 
   const bloodRequests = [
     { id: 1, date: "2024-01-20", bloodType: "A+", units: 2, status: "Fulfilled", hospital: "City General Hospital" },
@@ -37,14 +32,6 @@ const PatientDashboard = () => {
     { date: "2024-02-20", time: "10:00 AM", location: "Specialist Clinic", type: "Follow-up" },
   ];
 
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-medical-red"></div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -52,7 +39,7 @@ const PatientDashboard = () => {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Patient Portal</h1>
-          <p className="text-gray-600">Welcome, {user.email}! Manage your blood requests and medical appointments.</p>
+          <p className="text-gray-600">Welcome, {user?.email}! Manage your blood requests and medical appointments.</p>
         </div>
 
         {/* Stats Cards */}
@@ -239,7 +226,7 @@ const PatientDashboard = () => {
                     <User className="h-5 w-5 text-medical-red" />
                     <div>
                       <p className="font-medium">Email</p>
-                      <p className="text-sm text-gray-600">{user.email}</p>
+                      <p className="text-sm text-gray-600">{user?.email}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -266,6 +253,14 @@ const PatientDashboard = () => {
         </Tabs>
       </div>
     </div>
+  );
+};
+
+const PatientDashboard = () => {
+  return (
+    <RoleProtectedRoute allowedRole="patient">
+      <PatientDashboardContent />
+    </RoleProtectedRoute>
   );
 };
 

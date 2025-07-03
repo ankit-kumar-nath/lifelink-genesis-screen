@@ -20,6 +20,7 @@ export type Database = {
           last_name: string | null
           password: string | null
           phone: string | null
+          role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
           agree_to_marketing?: boolean | null
@@ -31,6 +32,7 @@ export type Database = {
           last_name?: string | null
           password?: string | null
           phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
         }
         Update: {
           agree_to_marketing?: boolean | null
@@ -42,6 +44,7 @@ export type Database = {
           last_name?: string | null
           password?: string | null
           phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
         }
         Relationships: []
       }
@@ -53,7 +56,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_role: "donor" | "patient" | "healthcare"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -168,6 +171,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["donor", "patient", "healthcare"],
+    },
   },
 } as const
