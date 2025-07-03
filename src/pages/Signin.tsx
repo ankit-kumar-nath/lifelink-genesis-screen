@@ -132,25 +132,34 @@ const Signin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-medical flex items-center justify-center p-4">
-      <div className="grid lg:grid-cols-2 gap-8 w-full max-w-6xl items-center">
-        {/* Hero Image */}
-        <div className="hidden lg:block">
-          <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-            <img 
-              src={bloodSavesLife} 
-              alt="Blood donation saving lives in hospital" 
-              className="w-full h-[600px] object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-            <div className="absolute bottom-6 left-6 text-white">
-              <h2 className="text-2xl font-bold mb-2">Every Donation Saves Lives</h2>
-              <p className="text-white/90">Your blood donation can be the difference between life and death for patients in need.</p>
+    <div className="min-h-screen bg-gradient-medical flex">
+      {/* Hero Image Section - 50% */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src={bloodSavesLife} 
+            alt="Blood donation saving lives in hospital" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-medical-red/20 via-transparent to-black/60"></div>
+        </div>
+        <div className="relative z-10 flex flex-col justify-end p-12 text-white">
+          <div className="space-y-4">
+            <h2 className="text-4xl font-bold leading-tight">Every Drop Counts</h2>
+            <p className="text-xl text-white/90 leading-relaxed">
+              Your blood donation can be the difference between life and death for patients in critical need.
+            </p>
+            <div className="flex items-center space-x-2 text-white/80">
+              <Heart className="h-5 w-5 fill-current" />
+              <span className="text-sm">Join thousands of life-savers</span>
             </div>
           </div>
         </div>
-        
-        <div className="w-full max-w-md mx-auto lg:mx-0">
+      </div>
+      
+      {/* Sign In Form Section - 50% */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 lg:p-12">
+        <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/" className="flex items-center justify-center space-x-2 mb-4">
@@ -272,7 +281,7 @@ const Signin = () => {
         {/* Additional Info */}
         <div className="mt-6 text-center">
           <p className="text-xs text-gray-600">
-            Sign in to access your donor profile and help save lives.
+          Sign in to access your donor profile and help save lives.
           </p>
         </div>
         </div>
