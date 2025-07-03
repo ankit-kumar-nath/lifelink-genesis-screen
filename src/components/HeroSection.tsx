@@ -4,32 +4,40 @@ import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
   return (
-    <section id="home" className="pt-16 sm:pt-20 pb-12 sm:pb-16 gradient-hero min-h-screen flex items-center">
-      <div className="container mx-auto px-4">
+    <section id="home" className="pt-16 sm:pt-20 pb-12 sm:pb-16 gradient-hero min-h-screen flex items-center relative overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Column - Content */}
-          <div className="text-white animate-fade-in text-center lg:text-left">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
+          <div className="text-white fade-in-up text-center lg:text-left">
+            <div className="mb-6">
+              <span className="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium border border-white/30 mb-4">
+                🩸 Trusted by 10,000+ Lives Saved
+              </span>
+            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
               Save Lives with
-              <span className="block text-yellow-300">LifeLink</span>
+              <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
+                LifeLink
+              </span>
             </h1>
-            <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-red-100 leading-relaxed max-w-lg mx-auto lg:mx-0">
+            <p className="text-lg sm:text-xl mb-8 text-white/90 leading-relaxed max-w-xl mx-auto lg:mx-0">
               Your trusted blood bank management system connecting donors, patients, 
               and healthcare facilities. Every donation counts, every life matters.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center lg:justify-start">
               <Button 
+                variant="glass"
                 size="lg" 
-                className="bg-white text-medical-red hover:bg-gray-100 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 shadow-lg w-full sm:w-auto"
+                className="text-base sm:text-lg px-8 py-4 group"
               >
-                <Heart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                <Heart className="mr-2 h-5 w-5 group-hover:animate-pulse" />
                 Donate Blood Now
               </Button>
               <Button 
+                variant="outline"
                 size="lg" 
-                variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-medical-red text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
+                className="border-2 border-white/50 text-white hover:bg-white hover:text-primary text-base sm:text-lg px-8 py-4"
               >
                 Request Blood
               </Button>
@@ -53,35 +61,35 @@ const HeroSection = () => {
           </div>
 
           {/* Right Column - Features Grid */}
-          <div className="grid grid-cols-2 gap-4 sm:gap-6 animate-fade-in mt-8 lg:mt-0">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20">
-              <Shield className="h-8 w-8 sm:h-12 sm:w-12 text-yellow-300 mb-3 sm:mb-4 mx-auto sm:mx-0" />
-              <h3 className="text-white font-semibold mb-2 text-sm sm:text-base text-center sm:text-left">Safe & Secure</h3>
-              <p className="text-red-100 text-xs sm:text-sm text-center sm:text-left">
+          <div className="grid grid-cols-2 gap-6 fade-in-up mt-8 lg:mt-0">
+            <div className="glass-effect rounded-2xl p-6 hover-lift group">
+              <Shield className="h-12 w-12 text-yellow-300 mb-4 mx-auto sm:mx-0 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-white font-bold mb-3 text-base text-center sm:text-left">Safe & Secure</h3>
+              <p className="text-white/80 text-sm text-center sm:text-left leading-relaxed">
                 Advanced security protocols ensure donor and patient data protection
               </p>
             </div>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20">
-              <Clock className="h-8 w-8 sm:h-12 sm:w-12 text-yellow-300 mb-3 sm:mb-4 mx-auto sm:mx-0" />
-              <h3 className="text-white font-semibold mb-2 text-sm sm:text-base text-center sm:text-left">Real-time Tracking</h3>
-              <p className="text-red-100 text-xs sm:text-sm text-center sm:text-left">
+            <div className="glass-effect rounded-2xl p-6 hover-lift group">
+              <Clock className="h-12 w-12 text-yellow-300 mb-4 mx-auto sm:mx-0 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-white font-bold mb-3 text-base text-center sm:text-left">Real-time Tracking</h3>
+              <p className="text-white/80 text-sm text-center sm:text-left leading-relaxed">
                 Live inventory updates and emergency blood request notifications
               </p>
             </div>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20">
-              <Users className="h-8 w-8 sm:h-12 sm:w-12 text-yellow-300 mb-3 sm:mb-4 mx-auto sm:mx-0" />
-              <h3 className="text-white font-semibold mb-2 text-sm sm:text-base text-center sm:text-left">Community Network</h3>
-              <p className="text-red-100 text-xs sm:text-sm text-center sm:text-left">
+            <div className="glass-effect rounded-2xl p-6 hover-lift group">
+              <Users className="h-12 w-12 text-yellow-300 mb-4 mx-auto sm:mx-0 group-hover:scale-110 transition-transform duration-300" />
+              <h3 className="text-white font-bold mb-3 text-base text-center sm:text-left">Community Network</h3>
+              <p className="text-white/80 text-sm text-center sm:text-left leading-relaxed">
                 Connect with donors and healthcare providers in your area
               </p>
             </div>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20">
-              <Heart className="h-8 w-8 sm:h-12 sm:w-12 text-yellow-300 mb-3 sm:mb-4 animate-pulse-slow mx-auto sm:mx-0" />
-              <h3 className="text-white font-semibold mb-2 text-sm sm:text-base text-center sm:text-left">Life Saving Mission</h3>
-              <p className="text-red-100 text-xs sm:text-sm text-center sm:text-left">
+            <div className="glass-effect rounded-2xl p-6 hover-lift group glow-effect">
+              <Heart className="h-12 w-12 text-yellow-300 mb-4 medical-pulse mx-auto sm:mx-0" />
+              <h3 className="text-white font-bold mb-3 text-base text-center sm:text-left">Life Saving Mission</h3>
+              <p className="text-white/80 text-sm text-center sm:text-left leading-relaxed">
                 Every donation can save up to 3 lives - be a hero today
               </p>
             </div>

@@ -83,59 +83,61 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-gray-200 z-50 safe-area-top">
-      <div className="container mx-auto px-4 py-3">
+    <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-b border-gray-200/50 z-50 safe-area-top shadow-lg">
+      <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="bg-medical-red rounded-full p-2 medical-pulse">
-              <Heart className="h-5 w-5 text-white fill-current" />
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl p-3 medical-pulse shadow-lg group-hover:shadow-xl transition-all duration-300">
+              <Heart className="h-6 w-6 text-white fill-current" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-800">LifeLink</h1>
-              <p className="text-xs text-gray-600 hidden sm:block">Blood Bank System</p>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                LifeLink
+              </h1>
+              <p className="text-xs text-muted-foreground hidden sm:block font-medium">Blood Bank System</p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6">
-            <Link to="/" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+          <nav className="hidden lg:flex items-center space-x-8">
+            <Link to="/" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
               Home
             </Link>
-            <Link to="/donate" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+            <Link to="/donate" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
               Donate Blood
             </Link>
-            <Link to="/request" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+            <Link to="/request" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
               Request Blood
             </Link>
-            <Link to="/inventory" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+            <Link to="/inventory" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
               Inventory
             </Link>
-            <Link to="/about" className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+            <Link to="/about" className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105">
               About
             </Link>
             {user && userRole && getDashboardLink() && (
-              <Link to={getDashboardLink()!} className="text-gray-700 hover:text-medical-red transition-colors text-sm">
+              <Link to={getDashboardLink()!} className="text-foreground/80 hover:text-primary transition-all duration-300 text-sm font-medium hover:scale-105 px-3 py-2 bg-accent rounded-lg">
                 {getDashboardLabel()}
               </Link>
             )}
           </nav>
 
           {/* Desktop CTA Buttons */}
-          <div className="hidden lg:flex items-center space-x-3">
+          <div className="hidden lg:flex items-center space-x-4">
             {user ? (
               <>
-                <span className="text-sm text-gray-600">Welcome, {user.email}</span>
-                <Button onClick={handleSignOut} variant="outline" size="sm" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white">
+                <span className="text-sm text-muted-foreground font-medium">Welcome, {user.email}</span>
+                <Button onClick={handleSignOut} variant="outline" size="sm" className="hover:shadow-lg transition-all duration-300">
                   Sign Out
                 </Button>
               </>
             ) : (
               <>
-                <Button asChild variant="outline" size="sm" className="border-medical-red text-medical-red hover:bg-medical-red hover:text-white">
+                <Button asChild variant="ghost" size="sm" className="font-medium">
                   <Link to="/signin">Sign In</Link>
                 </Button>
-                <Button asChild size="sm" className="bg-medical-red hover:bg-medical-red-dark">
+                <Button asChild variant="gradient" size="sm" className="font-semibold shadow-lg">
                   <Link to="/signup">Register</Link>
                 </Button>
               </>
