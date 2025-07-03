@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, Eye, EyeOff, LogIn } from "lucide-react";
@@ -25,17 +26,22 @@ const Signin = () => {
   useEffect(() => {
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
+      if (session?.user) {
+        console.log("User already logged in, checking role...");
         // Get user role and redirect to appropriate dashboard
-        const { data: userData } = await supabase
+        const { data: userData, error } = await supabase
           .from('users')
           .select('role')
           .eq('email', session.user.email)
           .single();
         
+        console.log("User role data:", userData, "Error:", error);
+        
         if (userData?.role) {
+          console.log("Redirecting to dashboard:", userData.role);
           navigate(`/dashboard/${userData.role}`);
         } else {
+          console.log("No role found, redirecting to home");
           navigate("/");
         }
       }
@@ -76,12 +82,15 @@ const Signin = () => {
     setIsLoading(true);
     
     try {
+      console.log("Attempting to sign in with:", formData.email);
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
       if (error) {
+        console.error("Sign in error:", error);
         if (error.message.includes('Email not confirmed')) {
           toast.error("Please check your email and click the confirmation link before signing in.");
         } else if (error.message.includes('Invalid login credentials')) {
@@ -93,18 +102,23 @@ const Signin = () => {
       }
 
       if (data.user) {
+        console.log("Sign in successful, user:", data.user.email);
         toast.success("Successfully signed in!");
         
         // Get user role and redirect to appropriate dashboard
-        const { data: userData } = await supabase
+        const { data: userData, error: userError } = await supabase
           .from('users')
           .select('role')
           .eq('email', data.user.email)
           .single();
         
+        console.log("Fetched user role:", userData, "Error:", userError);
+        
         if (userData?.role) {
+          console.log("Redirecting to dashboard for role:", userData.role);
           navigate(`/dashboard/${userData.role}`);
         } else {
+          console.log("No role found, redirecting to home");
           navigate("/");
         }
       }

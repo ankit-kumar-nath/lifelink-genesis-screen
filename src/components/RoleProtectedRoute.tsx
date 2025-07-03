@@ -17,23 +17,30 @@ const RoleProtectedRoute = ({ children, allowedRole }: RoleProtectedRouteProps) 
 
   useEffect(() => {
     const checkUserAndRole = async () => {
+      console.log("RoleProtectedRoute: Checking user and role for", allowedRole);
+      
       const { data: { session } } = await supabase.auth.getSession();
       
-      if (!session) {
+      if (!session?.user) {
+        console.log("RoleProtectedRoute: No session found, redirecting to signin");
         navigate("/signin");
         return;
       }
 
+      console.log("RoleProtectedRoute: User found:", session.user.email);
       setUser(session.user);
 
       // Fetch user role
-      const { data: userData } = await supabase
+      const { data: userData, error } = await supabase
         .from('users')
         .select('role')
         .eq('email', session.user.email)
         .single();
 
+      console.log("RoleProtectedRoute: User role data:", userData, "Error:", error);
+
       if (!userData?.role) {
+        console.log("RoleProtectedRoute: No role found, redirecting to home");
         navigate("/");
         return;
       }
@@ -42,11 +49,13 @@ const RoleProtectedRoute = ({ children, allowedRole }: RoleProtectedRouteProps) 
 
       // Check if user has access to this role
       if (userData.role !== allowedRole) {
+        console.log(`RoleProtectedRoute: User role ${userData.role} doesn't match required ${allowedRole}, redirecting`);
         // Redirect to their correct dashboard
         navigate(`/dashboard/${userData.role}`);
         return;
       }
 
+      console.log("RoleProtectedRoute: Access granted for role:", userData.role);
       setIsLoading(false);
     };
 

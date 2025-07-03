@@ -18,29 +18,33 @@ const Header = () => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
+        console.log("Header: Fetching role for user:", session.user.email);
         // Fetch user role
-        const { data: userData } = await supabase
+        const { data: userData, error } = await supabase
           .from('users')
           .select('role')
           .eq('email', session.user.email)
           .single();
         
+        console.log("Header: User role data:", userData, "Error:", error);
         setUserRole(userData?.role ?? null);
       }
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("Header: Auth state changed:", event);
         setUser(session?.user ?? null);
         
         if (session?.user) {
           // Fetch user role
-          const { data: userData } = await supabase
+          const { data: userData, error } = await supabase
             .from('users')
             .select('role')
             .eq('email', session.user.email)
             .single();
           
+          console.log("Header: Auth change - User role data:", userData, "Error:", error);
           setUserRole(userData?.role ?? null);
         } else {
           setUserRole(null);
@@ -54,6 +58,7 @@ const Header = () => {
   }, []);
 
   const handleSignOut = async () => {
+    console.log("Header: Signing out user");
     await supabase.auth.signOut();
     setUserRole(null);
     navigate("/");
