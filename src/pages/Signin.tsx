@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, Eye, EyeOff, LogIn } from "lucide-react";
-import bloodSavesLife from "@/assets/blood-saves-life.jpg";
+import bloodDonationProcess from "@/assets/blood-donation-process.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -137,21 +137,21 @@ const Signin = () => {
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <div className="absolute inset-0">
           <img 
-            src={bloodSavesLife} 
-            alt="Blood donation saving lives in hospital" 
+            src={bloodDonationProcess} 
+            alt="Blood donor donating blood in medical center" 
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-medical-red/20 via-transparent to-black/60"></div>
         </div>
         <div className="relative z-10 flex flex-col justify-end p-12 text-white">
           <div className="space-y-4">
-            <h2 className="text-4xl font-bold leading-tight">Every Drop Counts</h2>
+            <h2 className="text-4xl font-bold leading-tight">Join Our Heroes</h2>
             <p className="text-xl text-white/90 leading-relaxed">
-              Your blood donation can be the difference between life and death for patients in critical need.
+              Sign in to continue your journey as a blood donor and help save lives in your community.
             </p>
             <div className="flex items-center space-x-2 text-white/80">
               <Heart className="h-5 w-5 fill-current" />
-              <span className="text-sm">Join thousands of life-savers</span>
+              <span className="text-sm">Every donation makes a difference</span>
             </div>
           </div>
         </div>
