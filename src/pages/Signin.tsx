@@ -132,7 +132,7 @@ const Signin = () => {
 
   return (
     <div className="min-h-screen gradient-hero flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/10"></div>
+      <div className="absolute inset-0 bg-black/20"></div>
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-8 fade-in-up">
