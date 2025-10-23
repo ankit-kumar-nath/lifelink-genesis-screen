@@ -42,8 +42,22 @@ const Signin = () => {
           console.log("Redirecting to dashboard:", userData.role);
           navigate(`/dashboard/${userData.role}`);
         } else {
-          console.log("No role found, redirecting to home");
-          navigate("/");
+          console.log("No user record found, creating default donor profile");
+          const { error: createError } = await supabase
+            .from('users')
+            .insert([
+              {
+                id: session.user.id,
+                email: session.user.email!,
+                role: 'donor'
+              }
+            ]);
+          if (createError) {
+            console.error("Create user record error:", createError);
+            navigate("/");
+            return;
+          }
+          navigate("/dashboard/donor");
         }
       }
     };
@@ -119,8 +133,22 @@ const Signin = () => {
           console.log("Redirecting to dashboard for role:", userData.role);
           navigate(`/dashboard/${userData.role}`);
         } else {
-          console.log("No role found, redirecting to home");
-          navigate("/");
+          console.log("No user record found post login, creating default donor profile");
+          const { error: createError } = await supabase
+            .from('users')
+            .insert([
+              {
+                id: data.user.id,
+                email: data.user.email!,
+                role: 'donor'
+              }
+            ]);
+          if (createError) {
+            console.error("Create user record error:", createError);
+            navigate("/");
+            return;
+          }
+          navigate("/dashboard/donor");
         }
       }
     } catch (error: any) {
