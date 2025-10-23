@@ -34,8 +34,8 @@ const RoleProtectedRoute = ({ children, allowedRole }: RoleProtectedRouteProps) 
       const { data: userData, error } = await supabase
         .from('users')
         .select('role')
-        .eq('email', session.user.email)
-        .single();
+        .eq('id', session.user.id)
+        .maybeSingle();
 
       console.log("RoleProtectedRoute: User role data:", userData, "Error:", error);
 

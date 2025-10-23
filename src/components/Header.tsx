@@ -23,8 +23,8 @@ const Header = () => {
         const { data: userData, error } = await supabase
           .from('users')
           .select('role')
-          .eq('email', session.user.email)
-          .single();
+          .eq('id', session.user.id)
+          .maybeSingle();
         
         console.log("Header: User role data:", userData, "Error:", error);
         setUserRole(userData?.role ?? null);
@@ -41,8 +41,8 @@ const Header = () => {
           const { data: userData, error } = await supabase
             .from('users')
             .select('role')
-            .eq('email', session.user.email)
-            .single();
+            .eq('id', session.user.id)
+            .maybeSingle();
           
           console.log("Header: Auth change - User role data:", userData, "Error:", error);
           setUserRole(userData?.role ?? null);

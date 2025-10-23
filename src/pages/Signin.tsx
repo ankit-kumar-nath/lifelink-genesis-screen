@@ -33,8 +33,8 @@ const Signin = () => {
         const { data: userData, error } = await supabase
           .from('users')
           .select('role')
-          .eq('email', session.user.email)
-          .single();
+          .eq('id', session.user.id)
+          .maybeSingle();
         
         console.log("User role data:", userData, "Error:", error);
         
@@ -110,8 +110,8 @@ const Signin = () => {
         const { data: userData, error: userError } = await supabase
           .from('users')
           .select('role')
-          .eq('email', data.user.email)
-          .single();
+          .eq('id', data.user.id)
+          .maybeSingle();
         
         console.log("Fetched user role:", userData, "Error:", userError);
         
