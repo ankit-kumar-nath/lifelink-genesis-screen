@@ -47,23 +47,23 @@ const RoleProtectedRoute = ({ children, allowedRole }: RoleProtectedRouteProps) 
       }
 
 
-      if (!userData?.role) {
+      if (!role) {
         console.log("RoleProtectedRoute: No role found, redirecting to home");
         navigate("/");
         return;
       }
 
-      setUserRole(userData.role);
+      setUserRole(role);
 
       // Check if user has access to this role
-      if (userData.role !== allowedRole) {
-        console.log(`RoleProtectedRoute: User role ${userData.role} doesn't match required ${allowedRole}, redirecting`);
+      if (role !== allowedRole) {
+        console.log(`RoleProtectedRoute: User role ${role} doesn't match required ${allowedRole}, redirecting`);
         // Redirect to their correct dashboard
-        navigate(`/dashboard/${userData.role}`);
+        navigate(`/dashboard/${role}`);
         return;
       }
 
-      console.log("RoleProtectedRoute: Access granted for role:", userData.role);
+      console.log("RoleProtectedRoute: Access granted for role:", role);
       setIsLoading(false);
     };
 
