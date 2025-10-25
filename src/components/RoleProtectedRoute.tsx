@@ -30,14 +30,22 @@ const RoleProtectedRoute = ({ children, allowedRole }: RoleProtectedRouteProps) 
       console.log("RoleProtectedRoute: User found:", session.user.email);
       setUser(session.user);
 
-      // Fetch user role
-      const { data: userData, error } = await supabase
-        .from('users')
-        .select('role')
-        .eq('id', session.user.id)
-        .maybeSingle();
+      // Fetch user role using secure RPC, with fallback to users table
+      let role: string | null = null;
+      const { data: rpcRole, error: rpcError } = await supabase.rpc('get_user_role', { _user_id: session.user.id });
+      console.log('RoleProtectedRoute: RPC get_user_role =>', rpcRole, 'Error:', rpcError);
+      if (rpcRole) {
+        role = rpcRole as string;
+      } else {
+        const { data: userData, error } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', session.user.id)
+          .maybeSingle();
+        console.log('RoleProtectedRoute: Fallback users.role =>', userData, 'Error:', error);
+        role = userData?.role ?? null;
+      }
 
-      console.log("RoleProtectedRoute: User role data:", userData, "Error:", error);
 
       if (!userData?.role) {
         console.log("RoleProtectedRoute: No role found, redirecting to home");

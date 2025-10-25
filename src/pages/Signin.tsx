@@ -42,22 +42,36 @@ const Signin = () => {
           console.log("Redirecting to dashboard:", userData.role);
           navigate(`/dashboard/${userData.role}`);
         } else {
-          console.log("No user record found, creating default donor profile");
-          const { error: createError } = await supabase
+          // Fallback: try to find a pre-seeded user by email (may have a different id)
+          const { data: emailUser, error: emailErr } = await supabase
             .from('users')
-            .insert([
-              {
-                id: session.user.id,
-                email: session.user.email!,
-                role: 'donor'
-              }
-            ]);
-          if (createError) {
-            console.error("Create user record error:", createError);
-            navigate("/");
-            return;
+            .select('id, role')
+            .eq('email', session.user.email!)
+            .maybeSingle();
+
+          console.log("Fallback by email user:", emailUser, "Error:", emailErr);
+
+          if (emailUser?.role) {
+            console.log("Redirecting based on email-linked record:", emailUser.role);
+            navigate(`/dashboard/${emailUser.role}`);
+          } else {
+            console.log("No user record found, creating default donor profile");
+            const { error: createError } = await supabase
+              .from('users')
+              .insert([
+                {
+                  id: session.user.id,
+                  email: session.user.email!,
+                  role: 'donor'
+                }
+              ]);
+            if (createError) {
+              console.error("Create user record error:", createError);
+              navigate("/");
+              return;
+            }
+            navigate("/dashboard/donor");
           }
-          navigate("/dashboard/donor");
         }
       }
     };
@@ -133,22 +147,36 @@ const Signin = () => {
           console.log("Redirecting to dashboard for role:", userData.role);
           navigate(`/dashboard/${userData.role}`);
         } else {
-          console.log("No user record found post login, creating default donor profile");
-          const { error: createError } = await supabase
+          // Fallback: attempt to find by email (pre-seeded users not linked by id)
+          const { data: emailUser, error: emailErr } = await supabase
             .from('users')
-            .insert([
-              {
-                id: data.user.id,
-                email: data.user.email!,
-                role: 'donor'
-              }
-            ]);
-          if (createError) {
-            console.error("Create user record error:", createError);
-            navigate("/");
-            return;
+            .select('id, role')
+            .eq('email', data.user.email!)
+            .maybeSingle();
+
+          console.log("Post-login fallback by email:", emailUser, "Error:", emailErr);
+
+          if (emailUser?.role) {
+            console.log("Redirecting based on email-linked record:", emailUser.role);
+            navigate(`/dashboard/${emailUser.role}`);
+          } else {
+            console.log("No user record found post login, creating default donor profile");
+            const { error: createError } = await supabase
+              .from('users')
+              .insert([
+                {
+                  id: data.user.id,
+                  email: data.user.email!,
+                  role: 'donor'
+                }
+              ]);
+            if (createError) {
+              console.error("Create user record error:", createError);
+              navigate("/");
+              return;
+            }
+            navigate("/dashboard/donor");
           }
-          navigate("/dashboard/donor");
         }
       }
     } catch (error: any) {

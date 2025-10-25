@@ -19,7 +19,7 @@ const Header = () => {
       
       if (session?.user) {
         console.log("Header: Fetching role for user:", session.user.email);
-        // Fetch user role
+        // Fetch user role by id; fallback to email if not linked yet
         const { data: userData, error } = await supabase
           .from('users')
           .select('role')
@@ -27,7 +27,17 @@ const Header = () => {
           .maybeSingle();
         
         console.log("Header: User role data:", userData, "Error:", error);
-        setUserRole(userData?.role ?? null);
+        if (userData?.role) {
+          setUserRole(userData.role);
+        } else {
+          const { data: emailUser, error: emailErr } = await supabase
+            .from('users')
+            .select('id, role')
+            .eq('email', session.user.email!)
+            .maybeSingle();
+          console.log("Header: Fallback email role:", emailUser, "Error:", emailErr);
+          setUserRole(emailUser?.role ?? null);
+        }
       }
     };
 
