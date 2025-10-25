@@ -23,7 +23,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import Header from "@/components/Header";
 import RoleProtectedRoute from "@/components/RoleProtectedRoute";
@@ -40,12 +40,14 @@ interface Location {
   created_at: string;
 }
 
+type Role = "admin" | "donor" | "patient" | "healthcare";
+
 interface User {
   id: string;
   email: string;
   first_name: string;
   last_name: string;
-  role: string;
+  role: Role;
   blood_type: string;
   phone: string;
   created_at: string;
@@ -57,7 +59,7 @@ interface BloodInventory {
   blood_type: string;
   units_available: number;
   expiry_date: string;
-  locations?: Location;
+  locations?: Partial<Location>;
 }
 
 interface BloodRequest {
@@ -71,7 +73,7 @@ interface BloodRequest {
   doctor_name: string;
   reason: string;
   created_at: string;
-  users?: User;
+  users?: Partial<User>;
 }
 
 const AdminDashboard = () => {
@@ -604,7 +606,7 @@ const AdminDashboard = () => {
                       </div>
                       <div>
                         <Label htmlFor="role">Role</Label>
-                        <Select value={newUser.role} onValueChange={(value) => setNewUser({...newUser, role: value})}>
+                        <Select value={newUser.role} onValueChange={(value) => setNewUser({...newUser, role: value as Role})}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
