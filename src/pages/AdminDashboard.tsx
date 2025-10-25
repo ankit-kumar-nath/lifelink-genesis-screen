@@ -24,6 +24,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import { toast } from "sonner";
 import Header from "@/components/Header";
 import RoleProtectedRoute from "@/components/RoleProtectedRoute";
@@ -102,7 +103,16 @@ const AdminDashboard = () => {
   });
 
   // Form states for new user
-  const [newUser, setNewUser] = useState({
+  type NewUserForm = {
+    email: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+    role: Role;
+    blood_type: string;
+    phone: string;
+  };
+  const [newUser, setNewUser] = useState<NewUserForm>({
     email: "",
     password: "",
     first_name: "",
@@ -280,7 +290,7 @@ const AdminDashboard = () => {
             email: newUser.email,
             first_name: newUser.first_name,
             last_name: newUser.last_name,
-            role: newUser.role,
+            role: newUser.role as Database["public"]["Enums"]["user_role"],
             blood_type: newUser.blood_type || null,
             phone: newUser.phone || null
           }]);
